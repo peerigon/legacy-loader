@@ -1,0 +1,24 @@
+{
+  "name": "legacy-loader",
+  "version": "0.0.1",
+  "description": "Webpack loader for old scripts that rely on a global namespace",
+  "main": "./index.js",
+  "keywords": [
+    "webpack",
+    "loader",
+    "legacy",
+    "global",
+    "namespace"
+  ],
+  "dependencies": {
+    "loader-utils": "^0.2.6",
+    "source-map": "^0.2.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peerigon/legacy-loader.git"
+  },
+  "author": "peerigon <developers@peerigon.com>",
+  "license": "Unlicense"
+}
