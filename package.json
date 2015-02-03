@@ -2,7 +2,10 @@
   "name": "legacy-loader",
   "version": "0.0.1",
   "description": "Webpack loader for old scripts that rely on a global namespace",
-  "main": "./index.js",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "mocha -R spec"
+  },
   "keywords": [
     "webpack",
     "loader",
@@ -14,7 +17,12 @@
     "loader-utils": "^0.2.6",
     "source-map": "^0.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "enhanced-require": "^0.5.0-beta6",
+    "mocha": "^2.1.0",
+    "webpack": "^1.5.3"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/peerigon/legacy-loader.git"
