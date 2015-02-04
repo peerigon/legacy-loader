@@ -3,7 +3,7 @@ legacy-loader
 **[Webpack](http://webpack.github.io/) loader that prevents scripts from extending the window object**
 
 [![Build Status](https://travis-ci.org/peerigon/legacy-loader.svg?branch=master)](https://travis-ci.org/peerigon/legacy-loader)
-[![Dependency Status](https://david-dm.org/peerigon/legacy-loader)](https://david-dm.org/peerigon/legacy-loader)
+[![Dependency Status](https://david-dm.org/peerigon/legacy-loader.svg)](https://david-dm.org/peerigon/legacy-loader)
 [![Coverage Status](https://img.shields.io/coveralls/peerigon/legacy-loader.svg)](https://coveralls.io/r/peerigon/legacy-loader?branch=master)
 
 Use this loader to cope with legacy scripts that extend the window object instead of using AMD or CommonJS.
