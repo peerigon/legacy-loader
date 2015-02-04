@@ -4,7 +4,8 @@
   "description": "Webpack loader for old scripts that rely on a global namespace",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha"
   },
   "keywords": [
     "webpack",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "enhanced-require": "^0.5.0-beta6",
+    "istanbul": "^0.3.5",
     "mocha": "^2.1.0",
     "webpack": "^1.5.3"
   },
