@@ -7,7 +7,10 @@ var exported;
 module.exports = [
     function () {
         window = global.window = {};
-        require("../../lib/index.js?publish=propertyB!../fixtures/legacyMulti.js");
+        exported = require("../../lib/index.js?exports=propertyA&publish=propertyB!../fixtures/legacyMulti.js");
+    },
+    function () {
+        expect(exported).to.equal(true);
     },
     function () {
         expect(window.propertyB).to.equal(false);
