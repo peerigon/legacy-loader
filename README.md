@@ -79,7 +79,7 @@ you can also pass a property name:
 ```javascript
     {
         test: /[\/\\]node_modules[\/\\]some-legacy-script[\/\\]index\.js$/,
-        loader: "legacy?export=propertyA"
+        loader: "legacy?exports=propertyA"
     }
 ```
 
