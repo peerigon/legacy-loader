@@ -4,11 +4,11 @@ var compile = require("./helpers/compile.js");
 
 describe("legacy-loader", function () {
 
-    describe("singleExtend", function () {
+    describe("single exports", function () {
         var testRunner;
 
         before(function (done) {
-            compile("singleExtend", function (err, result) {
+            compile("single", function (err, result) {
                 if (err) {
                     done(err);
                     return;
@@ -32,11 +32,11 @@ describe("legacy-loader", function () {
 
     });
 
-    describe("multiExtend", function () {
+    describe("multi exports", function () {
         var testRunner;
 
         before(function (done) {
-            compile("multiExtend", function (err, result) {
+            compile("multi", function (err, result) {
                 if (err) {
                     done(err);
                     return;
@@ -60,11 +60,11 @@ describe("legacy-loader", function () {
 
     });
 
-    describe("namedExport", function () {
+    describe("specific exports", function () {
         var testRunner;
 
         before(function (done) {
-            compile("namedExport", function (err, result) {
+            compile("specific", function (err, result) {
                 if (err) {
                     done(err);
                     return;

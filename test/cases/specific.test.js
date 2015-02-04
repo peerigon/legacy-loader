@@ -7,12 +7,13 @@ var exported;
 module.exports = [
     function () {
         window = global.window = {};
-        exported = require("../../lib/index.js!../fixtures/singleExtend.js");
+        exported = require("../../lib/index.js?exports=propertyB!../fixtures/legacyMulti.js");
     },
     function () {
-        expect(exported).to.equal(true);
+        expect(exported).to.equal(false);
     },
     function () {
         expect("propertyA" in window).to.equal(false);
+        expect("propertyB" in window).to.equal(false);
     }
 ];
