@@ -119,7 +119,7 @@ Under the hood
 --------------
 
 The **legacy-loader** creates a window shim by inheriting from window via `Object.create(window)`. Thus the
-legacy script receives a window-like object, without being able to extend it. Of course, this approach as
+legacy script receives a window-like object, without being able to extend it. Of course, this approach has
 the usual limitations implied by the prototype inheritance (such as iterating over `window` while checking for
 `hasOwnProperty`).
 
