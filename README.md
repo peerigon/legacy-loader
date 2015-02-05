@@ -61,12 +61,14 @@ property to the window object. If it added two or more, an object is returned in
 
 ```javascript
 // node_modules/some-legacy-script/index.js
+
 window.propertyA = true;
 window.propertyB = false;
 ```
 
 ```javascript
 // app.js
+
 var someLegacyScript = require("some-legacy-script");
 
 someLegacyScript.propertyA; // true
@@ -83,14 +85,18 @@ you can also pass a property name:
 
 ```javascript
 // webpack.config.js
+
+    ...
     {
         test: /[\/\\]node_modules[\/\\]some-legacy-script[\/\\]index\.js$/,
         loader: "legacy?exports=propertyA"
     }
+    ...
 ```
 
 ```javascript
 // app.js
+
 var someLegacyScript = require("some-legacy-script");
 
 someLegacyScript; // true -> propertyA
@@ -105,14 +111,18 @@ you can decide to publish a single property back to the window object.
 
 ```javascript
 // webpack.config.js
+
+    ...
     {
         test: /[\/\\]node_modules[\/\\]some-legacy-script[\/\\]index\.js$/,
         loader: "legacy?publish=propertyB"
     }
+    ...
 ```
 
 ```javascript
 // app.js
+
 var someLegacyScript = require("some-legacy-script");
 
 someLegacyScript.propertyA; // true
