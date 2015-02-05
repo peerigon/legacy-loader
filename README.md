@@ -30,7 +30,7 @@ window.someLegacyScript = function () {
 };
 ```
 
-just run `npm i legacy-loader --save` and configure your `webpack.config.js` like this
+Now just run `npm i legacy-loader --save` and configure your `webpack.config.js` like this
 
 ```javascript
 module.exports = {
@@ -60,15 +60,20 @@ The **legacy-loader** exports a single value via `module.exports` when your lega
 property to the window object. If it added two or more, an object is returned instead:
 
 ```javascript
+// node_modules/some-legacy-script/index.js
 window.propertyA = true;
 window.propertyB = false;
 ```
 
 ```javascript
+// app.js
 var someLegacyScript = require("some-legacy-script");
 
 someLegacyScript.propertyA; // true
 someLegacyScript.propertyB; // false
+
+window.propertyA; // undefined
+window.propertyB; // undefined
 ```
 
 ### Specific exports
@@ -77,6 +82,7 @@ When your legacy script adds two or more properties, but you're still just inter
 you can also pass a property name:
 
 ```javascript
+// webpack.config.js
     {
         test: /[\/\\]node_modules[\/\\]some-legacy-script[\/\\]index\.js$/,
         loader: "legacy?exports=propertyA"
@@ -84,9 +90,10 @@ you can also pass a property name:
 ```
 
 ```javascript
+// app.js
 var someLegacyScript = require("some-legacy-script");
 
-someLegacyScript; // true
+someLegacyScript; // true -> propertyA
 ```
 
 ### Publish
@@ -97,6 +104,7 @@ private module scope. If this is not an option for you (e.g. because you're not 
 you can decide to publish a single property back to the window object.
 
 ```javascript
+// webpack.config.js
     {
         test: /[\/\\]node_modules[\/\\]some-legacy-script[\/\\]index\.js$/,
         loader: "legacy?publish=propertyB"
@@ -104,6 +112,7 @@ you can decide to publish a single property back to the window object.
 ```
 
 ```javascript
+// app.js
 var someLegacyScript = require("some-legacy-script");
 
 someLegacyScript.propertyA; // true
