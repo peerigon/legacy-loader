@@ -1,6 +1,6 @@
 {
   "name": "legacy-loader",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Webpack loader that prevents scripts from extending the window object",
   "main": "./lib/index.js",
   "scripts": {
