@@ -9,24 +9,32 @@ var outputDir = path.resolve(__dirname, "../output");
 
 function compile(testCase, done) {
     var testCaseFile = path.resolve(__dirname, "../cases/" + testCase  + ".test.js");
-    var result = {};
+    var result = {
+        enhancedRequire: null,
+        webpack: null
+    };
     var enhancedReq;
 
     enhancedReq = enhancedReqFactory(module);
 
     // run synchronously
-    result.enhancedReq = enhancedReq(testCaseFile);
+    try {
+        result.enhancedReq = enhancedReq(testCaseFile);
+    } catch (err) {
+        return done(err);
+    }
 
     // run asynchronously
     webpack({
         entry: testCaseFile,
+        devtool: "sourcemap",
         output: {
             path: outputDir,
-            filename: "bundle.js",
+            filename: testCase + ".js",
             libraryTarget: "commonjs2"
         }
     }, function onCompilationFinished(err, stats) {
-        var pathToBundle = path.join(outputDir, "bundle.js");
+        var pathToBundle = path.join(outputDir, testCase + ".js");
 
         if (err) {
             return done(err);
@@ -39,12 +47,18 @@ function compile(testCase, done) {
         }
         delete require.cache[pathToBundle];
 
-        result.webpack = require(pathToBundle);
+        try {
+            result.webpack = require(pathToBundle);
+        } catch (err) {
+            return done(err);
+        }
 
-        done(null, function testRunner(testNumber) {
+        result.testRunner = function testRunner(testNumber) {
             result.enhancedReq[testNumber]();
             result.webpack[testNumber]();
-        });
+        };
+
+        done(null, result);
     });
 }
 

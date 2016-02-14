@@ -3,3 +3,4 @@ if (!window || typeof window !== "object") {
 }
 
 window.propertyA = true;
+window.propertyB = true;

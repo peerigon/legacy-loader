@@ -15,4 +15,4 @@ npm-debug.log
 node_modules
 coverage
 .idea
-test/output/bundle.js
+test/output/**
