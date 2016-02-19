@@ -3,157 +3,101 @@
 var compile = require("./helpers/compile.js");
 var chai = require("chai");
 var expect = chai.expect;
-var loaderContextMock = require("./helpers/loaderContextMock.js");
 var loader = require("../lib/index.js");
+var sinon = require("sinon");
+var fs = require("fs");
+var path = require("path");
+var sourceMap = require("source-map");
 
 chai.use(require("sinon-chai"));
 
 describe("legacy-loader", function () {
+    var testModule;
 
-    describe("single exports", function () {
-        var testRunner;
+    function compileTestModule(options) {
+        return function () {
+            return compile(options)
+                .then(function (compiled) {
+                    testModule = compiled;
+                });
+        };
+    }
 
-        before(function (done) {
-            compile("single", function (err, result) {
-                if (err) {
-                    done(err);
-                    return;
-                }
-                testRunner = result.testRunner;
-                done();
-            });
-        });
+    function test(n) {
+        return function () {
+            testModule[n]();
+        };
+    }
 
-        it("should run without errors", function () {
-            testRunner(0);
-        });
+    describe("export", function () {
 
-        it("should export the requested property", function () {
-            testRunner(1);
-        });
+        before(compileTestModule("export"));
 
-    });
-
-    describe("multi exports", function () {
-        var testRunner;
-
-        before(function (done) {
-            compile("multi", function (err, result) {
-                if (err) {
-                    done(err);
-                    return;
-                }
-                testRunner = result.testRunner;
-                done();
-            });
-        });
-
-        it("should run without errors", function () {
-            testRunner(0);
-        });
-
-        it("should export an object with the requested properties", function () {
-            testRunner(1);
-        });
-
-    });
-
-    describe("remove properties from window object", function () {
-        var testRunner;
-
-        before(function (done) {
-            compile("remove", function (err, result) {
-                if (err) {
-                    done(err);
-                    return;
-                }
-                testRunner = result.testRunner;
-                done();
-            });
-        });
-
-        it("should not prevent the script from extending the window object by default", function () {
-            testRunner(0);
-        });
-
-        describe("single export and implicit remove", function () {
-
-            it("should remove the exported property only", function () {
-                testRunner(1);
-            });
-
-        });
-
-        describe("single export and explicit remove", function () {
-
-            it("should remove the given properties", function () {
-                testRunner(2);
-            });
-
-        });
-
-        describe("multi export and implicit remove", function () {
-
-            it("should remove all exported properties", function () {
-                testRunner(3);
-            });
-
-        });
-
-        describe("no export and explicit remove", function () {
-
-            it("should remove the given properties", function () {
-                testRunner(4);
-            });
-
-        });
+        it("should export the given property from the window object", test(0));
 
     });
 
     describe("context", function () {
-        var testRunner;
 
-        before(function (done) {
-            compile("context", function (err, result) {
-                if (err) {
-                    done(err);
-                    return;
-                }
-                testRunner = result.testRunner;
-                done();
-            });
-        });
+        before(compileTestModule("context"));
 
-        it("should init the module with the window as context", function () {
-            testRunner(0);
+        it("should inject window as this by default", test(0));
+        it("should be possible to inject null as this", test(1));
+        it("should be possible to inject module.exports as this", test(2));
+
+    });
+
+    describe("delete", function () {
+
+        before(compileTestModule("delete"));
+
+        it("should delete the exported property from window", test(0));
+        it("should throw an error if delete is used without an export property", function () {
+            return compile("deleteWithoutExport")
+                .then(function () {
+                    throw new Error("Expected to throw an error");
+                })
+                .catch(function (err) {
+                    expect(err.message).to.contain("Don't know which property to delete from window: The delete option is only available in combination with the export option");
+                });
         });
 
     });
 
-    describe("errors", function () {
+    describe("delete", function () {
 
-        it("should throw an error when neither exports nor remove is specified", function (done) {
-            compile("noExportsAndRemove", function (err) {
-                expect(err).to.be.an("object");
-                expect(err.message).to.equal("Neither exports nor remove parameter specified. You need at least one.");
-                done();
-            });
+        before(compileTestModule("delete"));
+
+        it("should delete the exported property from window", test(0));
+        it("should throw an error if delete is used without an export property", function () {
+            return compile("deleteWithoutExport")
+                .then(function () {
+                    throw new Error("Expected to throw an error");
+                })
+                .catch(function (err) {
+                    expect(err.message).to.contain("Don't know which property to delete from window: The delete option is only available in combination with the export option");
+                });
         });
 
-        it("should throw an error when implicit remove is without an export parameter", function (done) {
-            compile("implicitRemoveWithoutExports", function (err) {
-                expect(err).to.be.an("object");
-                expect(err.message).to.equal("Implicit remove without an export parameter is not possible.");
-                done();
-            });
-        });
     });
+
+    describe("hide", function () {
+
+        before(compileTestModule("hide"));
+
+        it("should hide the window variable", test(0));
+        it("should hide the module system", test(1));
+
+    });
+
 
     describe("cacheable", function () {
         var mock;
 
         it("should flag the module as cacheable", function () {
-            mock = loaderContextMock();
+            mock = {
+                cacheable: sinon.spy()
+            };
 
             loader.call(mock, "");
 
@@ -163,20 +107,23 @@ describe("legacy-loader", function () {
     });
 
     describe("source maps", function () {
-        var mock;
 
-        it("should return a proper source map if requested", function (done) {
-            mock = loaderContextMock();
+        it("should output a proper source map if requested", function () {
+            return compile("sourceMap", {
+                devtool: "sourcemap"
+            }).then(function () {
+                var consumer = new sourceMap.SourceMapConsumer(JSON.parse(fs.readFileSync(
+                    path.join(__dirname, "output", "sourceMap.js.map"),
+                    "utf8"
+                )));
+                var actualSrc = consumer.sourceContentFor(consumer.sources[1]);
+                var expectedSrc = '"hello";';
 
-            mock.callback = function (err, result, sourceMap) {
-                if (err) {
-                    return done(err);
-                }
-                console.log(sourceMap);
-                done(err);
-            };
+                // We need to slice off the auto generated webpack footer
+                actualSrc = actualSrc.slice(0, expectedSrc.length);
 
-            loader.call(mock, "", true);
+                expect(actualSrc).to.equal(expectedSrc);
+            });
         });
 
     });

@@ -16,19 +16,17 @@
     "namespace"
   ],
   "dependencies": {
-    "ejs": "^2.3.1",
-    "loader-utils": "^0.2.6",
-    "source-map": "^0.4.0"
+    "loader-utils": "^0.2.12",
+    "source-map": "^0.5.3"
   },
   "devDependencies": {
-    "chai": "^2.0.0",
-    "enhanced-require": "^0.5.0-beta6",
-    "istanbul": "^0.3.5",
-    "link-package": "0.0.2",
-    "mocha": "^2.1.0",
-    "sinon": "^1.12.2",
-    "sinon-chai": "^2.7.0",
-    "webpack": "^1.5.3"
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "object-assign": "^4.0.1",
+    "sinon": "^1.17.3",
+    "sinon-chai": "^2.8.0",
+    "webpack": "^1.12.13"
   },
   "repository": {
     "type": "git",

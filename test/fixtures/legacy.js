@@ -1,6 +1,3 @@
-if (!window || typeof window !== "object") {
+if (!window) {
     throw new Error("window is not defined");
 }
-
-window.propertyA = true;
-window.propertyB = true;
