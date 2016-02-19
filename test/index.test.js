@@ -90,7 +90,6 @@ describe("legacy-loader", function () {
 
     });
 
-
     describe("cacheable", function () {
         var mock;
 
@@ -116,8 +115,11 @@ describe("legacy-loader", function () {
                     path.join(__dirname, "output", "sourceMap.js.map"),
                     "utf8"
                 )));
-                var actualSrc = consumer.sourceContentFor(consumer.sources[1]);
                 var expectedSrc = '"hello";';
+                var file = consumer.sources.filter(function (filename) {
+                    return filename.match(/hello\.js$/);
+                })[0];
+                var actualSrc = consumer.sourceContentFor(file);
 
                 // We need to slice off the auto generated webpack footer
                 actualSrc = actualSrc.slice(0, expectedSrc.length);

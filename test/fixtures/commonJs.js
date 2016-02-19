@@ -1,8 +1,9 @@
 "use strict";
+/* global define, window */
 
 exports.this = function () {
     return this;
-}.bind(this);
+}.bind(this); // eslint-disable-line no-invalid-this
 
 exports.module = function () {
     return module;

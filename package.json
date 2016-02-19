@@ -5,8 +5,8 @@
   "main": "./lib/index.js",
   "scripts": {
     "test": "mocha -R spec",
-    "test-source-map": "webpack-dev-server --config test/sourceMap/webpack.config.js --content-base ./test/sourceMap",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha"
+    "posttest": "eslint src test",
+    "coverage": "istanbul cover _mocha"
   },
   "keywords": [
     "webpack",
@@ -21,6 +21,8 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^2.2.0",
+    "eslint-config-peerigon": "^3.0.0",
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
     "object-assign": "^4.0.1",

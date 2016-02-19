@@ -1,4 +1,5 @@
 "use strict";
+/* global Promise */
 
 var path = require("path");
 var webpack = require("webpack");
@@ -10,7 +11,7 @@ var outputDir = path.resolve(__dirname, "../output");
 function compile(testCase, options) {
     return new Promise(function (resolve, reject) {
         var defaultOptions = {
-            entry: path.resolve(__dirname, "../cases/" + testCase  + ".test.js"),
+            entry: path.resolve(__dirname, "../cases/" + testCase + ".test.js"),
             output: {
                 path: outputDir,
                 filename: testCase + ".js",
