@@ -107,25 +107,29 @@ describe("legacy-loader", function () {
 
     describe("source maps", function () {
 
-        it("should output a proper source map if requested", function () {
-            return compile("sourceMap", {
-                devtool: "sourcemap"
-            }).then(function () {
-                var consumer = new sourceMap.SourceMapConsumer(JSON.parse(fs.readFileSync(
-                    path.join(__dirname, "output", "sourceMap.js.map"),
-                    "utf8"
-                )));
-                var expectedSrc = '"hello";';
-                var file = consumer.sources.filter(function (filename) {
-                    return filename.match(/hello\.js$/);
-                })[0];
-                var actualSrc = consumer.sourceContentFor(file);
+        ["sourceMapSimple", "sourceMapChained"].forEach(function (testCase) {
 
-                // We need to slice off the auto generated webpack footer
-                actualSrc = actualSrc.slice(0, expectedSrc.length);
+            it("should output a proper source map if requested (" + testCase + ")", function () {
+                return compile(testCase, {
+                    devtool: "sourcemap"
+                }).then(function () {
+                    var consumer = new sourceMap.SourceMapConsumer(JSON.parse(fs.readFileSync(
+                        path.join(__dirname, "output", testCase + ".js.map"),
+                        "utf8"
+                    )));
+                    var expectedSrc = '"hello";';
+                    var file = consumer.sources.filter(function (filename) {
+                        return filename.match(/hello\.js$/);
+                    })[0];
+                    var actualSrc = consumer.sourceContentFor(file);
 
-                expect(actualSrc).to.equal(expectedSrc);
+                    // We need to slice off the auto generated webpack footer
+                    actualSrc = actualSrc.slice(0, expectedSrc.length);
+
+                    expect(actualSrc).to.equal(expectedSrc);
+                });
             });
+
         });
 
     });
