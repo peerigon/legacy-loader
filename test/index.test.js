@@ -90,6 +90,14 @@ describe("legacy-loader", function () {
 
     });
 
+    describe("modules with return statements on top level", function () {
+
+        it("should throw no parsing error", function () {
+            return compile("return");
+        });
+
+    });
+
     describe("cacheable", function () {
         var mock;
 
