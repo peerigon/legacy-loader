@@ -8,6 +8,8 @@ legacy-loader
 
 Use this loader to cope with legacy scripts that extend the window object instead of using AMD or CommonJS.
 
+**Please note: There is a major issue with the current approach of this loader, see [#1](https://github.com/peerigon/legacy-loader/issues/1). Use at your own risk!**
+
 <br />
 
 Installation
