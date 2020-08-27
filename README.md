@@ -1,5 +1,5 @@
-legacy-loader
-=============
+# legacy-loader
+
 **[Webpack](http://webpack.github.io/) loader that prevents scripts from extending the window object**
 
 [![Build Status](https://travis-ci.org/peerigon/legacy-loader.svg?branch=master)](https://travis-ci.org/peerigon/legacy-loader)
@@ -12,15 +12,13 @@ Use this loader to cope with legacy scripts that extend the window object instea
 
 <br />
 
-Installation
-------------
+## Installation
 
 [![npm status](https://nodei.co/npm/legacy-loader.svg?downloads=true&stars=true)](https://npmjs.org/package/legacy-loader)
 
 <br />
 
-Usage
------
+## Usage
 
 ### Basic example
 
@@ -40,10 +38,10 @@ module.exports = {
         loaders: [
             {
                 test: /[\/\\]node_modules[\/\\]some-legacy-script[\/\\]index\.js$/,
-                loader: "legacy"
-            }
-        ]
-    }
+                loader: "legacy",
+            },
+        ],
+    },
 };
 ```
 
@@ -136,8 +134,7 @@ window.propertyB; // false
 
 <br />
 
-Under the hood
---------------
+## Under the hood
 
 The **legacy-loader** creates a window shim by inheriting from window via `Object.create(window)`. Thus the
 legacy script receives a window-like object, without being able to extend it. Of course, this approach has
@@ -146,19 +143,21 @@ the usual limitations implied by the prototype inheritance (such as iterating ov
 
 <br />
 
-Contributing
-------------
+## Contributing
 
 From opening a bug report to creating a pull request: **every contribution is appreciated and welcome**. If you're planing to implement a new feature or change the api please create an issue first. This way we can ensure that your precious work is not in vain.
 
 All pull requests should have 100% test coverage (with notable exceptions) and need to pass all tests.
 
-- Call `npm test` to run the unit tests
-- Call `npm run coverage` to check the test coverage (using [istanbul](https://github.com/gotwarlost/istanbul))
+-   Call `npm test` to run the unit tests
+-   Call `npm run coverage` to check the test coverage (using [istanbul](https://github.com/gotwarlost/istanbul))
 
 <br />
 
-License
--------
+## License
 
 Unlicense
+
+## Sponsors
+
+[<img src="https://assets.peerigon.com/peerigon/logo/peerigon-logo-flat-spinat.png" width="150" />](https://peerigon.com)
